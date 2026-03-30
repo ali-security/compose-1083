@@ -3,25 +3,27 @@ name: codeql
 on:
   push:
     branches:
-       - 'main'
+       - main
+       - master
     paths-ignore:
-      - '**/*.md'
-      - '**/*.txt'
-      - '**/*.yaml'
-      - '**/*_test.go'
+       - '**/*.md'
+       - '**/*.txt'
+       - '**/*.yaml'
+       - '**/*_test.go'
   pull_request:
     branches:
-        - 'main'
+       - main
+       - master
     paths-ignore:
-      - '**/*.md'
-      - '**/*.txt'
-      - '**/*.yaml'
-      - '**/*_test.go'
+       - '**/*.md'
+       - '**/*.txt'
+       - '**/*.yaml'
+       - '**/*_test.go'
 
 jobs:
   analyze:
     name: Analyze
-    runs-on: 'ubuntu-latest'
+    runs-on: ubuntu-24.04
     permissions:
       actions: read
       contents: read
@@ -31,28 +33,23 @@ jobs:
       fail-fast: false
       matrix:
         language:
-          - go
-        
+           - go
+
     steps:
-    -
-      name: Checkout
-      uses: actions/checkout@v4
-    -
-      name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version-file: go.mod
-        check-latest: true
-    -
-      name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
-    -
-      name: Autobuild
-      uses: github/codeql-action/autobuild@v2
-    -
-      name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-      with:
-        category: "/language:${{matrix.language}}"
+       - name: Checkout
+         uses: actions/checkout@v4
+       - name: Set up Go
+         uses: actions/setup-go@v5
+         with:
+           go-version-file: go.mod
+           check-latest: true
+       - name: Initialize CodeQL
+         uses: github/codeql-action/init@v2
+         with:
+           languages: ${{ matrix.language }}
+       - name: Autobuild
+         uses: github/codeql-action/autobuild@v2
+       - name: Perform CodeQL Analysis
+         uses: github/codeql-action/analyze@v2
+         with:
+           category: /language:${{matrix.language}}
